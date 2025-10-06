@@ -166,7 +166,7 @@
                             </tr>
                         </thead>
                         <tbody id="availableCourses">
-                            <!-- Course data will be inserted here by JavaScript -->
+                            <!-- Course data will be inserted here-->
                         </tbody>
                     </table>
                 </div>
@@ -189,7 +189,7 @@
                             </tr>
                         </thead>
                         <tbody id="selectedCourses">
-                            <!-- Selected courses will be inserted here by JavaScript -->
+                            <!-- courses will be inserted here-->
                         </tbody>
                     </table>
                 </div>
@@ -211,7 +211,6 @@
                 'ADV52': 540
             };
             
-            // Initialize the application
             this.initCourseData();
             this.initEventListeners();
             this.renderCourses();
@@ -219,7 +218,6 @@
             this.updateProgressBar();
         }
         
-        // Initialize course data
         initCourseData() {
             this.courses = [
                 { id: 0, name: "Advanced CSS", lessons: 3, hours: 30 },
@@ -268,9 +266,7 @@
             ];
         }
         
-        // Initialize event listeners
         initEventListeners() {
-            // Program selection radio buttons
             document.querySelectorAll('input[name="program"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     this.programType = e.target.value;
@@ -278,18 +274,15 @@
                 });
             });
             
-            // Course search
             document.getElementById('courseSearch').addEventListener('input', (e) => {
                 this.filterCourses(e.target.value);
             });
             
-            // Copy schedule button
             document.getElementById('copyScheduleBtn').addEventListener('click', () => {
                 this.copyScheduleToClipboard();
             });
         }
         
-        // Render all available courses
         renderCourses() {
             const courseList = document.getElementById('availableCourses');
             courseList.innerHTML = '';
@@ -310,14 +303,12 @@
                 
                 courseList.appendChild(row);
                 
-                // Add event listener to the add button
                 row.querySelector('.btn-add').addEventListener('click', () => {
                     this.addCourse(course.id);
                 });
             });
         }
         
-        // Filter courses based on search input
         filterCourses(searchText) {
             const courseRows = document.querySelectorAll('#availableCourses tr');
             const searchLower = searchText.toLowerCase();
@@ -332,11 +323,9 @@
             });
         }
         
-        // Add a course to the schedule
         addCourse(courseId) {
             const course = this.courses.find(c => c.id === courseId);
             
-            // Check if course is already in selected courses
             if (this.selectedCourses.some(c => c.id === courseId)) {
                 alert(`${course.name} is already in your schedule!`);
                 return;
@@ -348,7 +337,6 @@
             this.updateProgressBar();
         }
         
-        // Remove a course from the schedule
         removeCourse(courseId) {
             this.selectedCourses = this.selectedCourses.filter(course => course.id !== courseId);
             this.renderSelectedCourses();
@@ -356,7 +344,6 @@
             this.updateProgressBar();
         }
         
-        // Render selected courses in the schedule
         renderSelectedCourses() {
             const scheduleList = document.getElementById('selectedCourses');
             scheduleList.innerHTML = '';
@@ -377,14 +364,12 @@
                 
                 scheduleList.appendChild(row);
                 
-                // Add event listener to the remove button
                 row.querySelector('.btn-remove').addEventListener('click', () => {
                     this.removeCourse(course.id);
                 });
             });
         }
         
-        // Update schedule summary (total hours and lessons)
         updateScheduleSummary() {
             const totalHours = this.selectedCourses.reduce((sum, course) => sum + course.hours, 0);
             const totalLessons = this.selectedCourses.reduce((sum, course) => sum + course.lessons, 0);
@@ -393,7 +378,6 @@
             document.getElementById('totalLessons').textContent = `Total Lessons: ${totalLessons}`;
         }
         
-        // Update progress bar based on selected courses and program type
         updateProgressBar() {
             const totalHours = this.selectedCourses.reduce((sum, course) => sum + course.hours, 0);
             const maxHours = this.programHours[this.programType];
@@ -406,7 +390,6 @@
             document.getElementById('progressLabel').textContent = 
                 `Program Progress: ${totalHours} of ${maxHours} hours (${percentComplete}%)`;
                 
-            // Change color based on completion
             if (percentComplete < 50) {
                 progressBar.classList.remove('bg-warning', 'bg-success');
                 progressBar.classList.add('bg-primary');
@@ -419,7 +402,6 @@
             }
         }
         
-        // Copy schedule to clipboard
         copyScheduleToClipboard() {
             if (this.selectedCourses.length === 0) {
                 alert('No courses selected yet!');
@@ -435,7 +417,6 @@
                 scheduleText += `${index + 1}. ${course.name} (${course.hours} hours, ${course.lessons} lessons)\n`;
             });
             
-            // Create temporary textarea to copy text
             const tempTextarea = document.createElement('textarea');
             tempTextarea.value = scheduleText;
             document.body.appendChild(tempTextarea);
@@ -447,7 +428,6 @@
         }
     }
     
-    // Initialize the app when DOM is fully loaded
     document.addEventListener('DOMContentLoaded', () => {
         const scheduler = new CourseScheduler();
     });
